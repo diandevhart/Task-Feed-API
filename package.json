@@ -1,0 +1,22 @@
+{
+  "name": "feed-mini-project",
+  "private": true,
+  "version": "0.0.1",
+  "workspaces": [
+    "backend",
+    "frontend"
+  ],
+  "scripts": {
+    "setup": "npm i --workspaces",
+    "db:up": "docker compose -f backend/docker-compose.yml up -d",
+    "db:down": "docker compose -f backend/docker-compose.yml down",
+    "seed": "npm --workspace backend run prisma:seed",
+    "migrate": "npm --workspace backend run prisma:migrate",
+    "dev:backend": "npm --workspace backend run start:dev",
+    "dev:frontend": "npm --workspace frontend run dev",
+    "dev:all": "npm run dev:backend & npm run dev:frontend"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  }
+}

@@ -1,0 +1,122 @@
+{
+  "info": {
+    "name": "Feed API Collection",
+    "_postman_id": "c1b7f2aa-2f7e-4a5a-9e1b-collection",
+    "description": "Sample requests for the Feed API mini-project.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Get Feed",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/feed?limit=20",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "feed"
+          ],
+          "query": [
+            {
+              "key": "limit",
+              "value": "20"
+            }
+          ]
+        },
+        "description": "Returns a paginated feed of tasks with project, assignee, tags, commentsCount, and lastComment."
+      },
+      "response": [
+        {
+          "name": "Example 200",
+          "originalRequest": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/feed?limit=20",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "feed"
+              ],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "20"
+                }
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "body": "{\n  \"items\": [\n    {\n      \"id\": \"uuid\",\n      \"title\": \"Investigate login bug\",\n      \"status\": \"IN_PROGRESS\",\n      \"project\": {\n        \"id\": \"uuid\",\n        \"name\": \"Web App\"\n      },\n      \"assignee\": {\n        \"id\": \"uuid\",\n        \"name\": \"Alex\"\n      },\n      \"tags\": [\n        {\n          \"id\": \"uuid\",\n          \"name\": \"bug\"\n        }\n      ],\n      \"commentsCount\": 2,\n      \"lastComment\": {\n        \"id\": \"uuid\",\n        \"createdAt\": \"2025-09-20T10:11:12.000Z\",\n        \"author\": {\n          \"id\": \"uuid\",\n          \"name\": \"Sam\"\n        },\n        \"snippet\": \"Looks like an issue with the session cookie\\u2026\"\n      },\n      \"createdAt\": \"2025-09-20T09:00:00.000Z\"\n    }\n  ],\n  \"nextCursor\": null\n}"
+        }
+      ]
+    },
+    {
+      "name": "Get Feed (with cursor)",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/feed?limit=20&cursor={{cursor}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "feed"
+          ],
+          "query": [
+            {
+              "key": "limit",
+              "value": "20"
+            },
+            {
+              "key": "cursor",
+              "value": "{{cursor}}"
+            }
+          ]
+        },
+        "description": "Second page using cursor returned from the first request."
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000"
+    },
+    {
+      "key": "cursor",
+      "value": ""
+    }
+  ]
+}
