@@ -9,10 +9,9 @@ export class FeedService {
   async getFeed(query: FeedQueryDto) {
     const { limit = 20, cursor } = query;
 
-    console.log('Feed requested: limit=' + limit + ', cursor=' + (cursor || 'none'));
-
     const tasks = await this.prismaService.task.findMany({
       take: limit + 1,
+      where: this.whereClause(cursor),
       orderBy: [
         { createdAt: 'desc' },
         { id: 'desc' }
@@ -82,8 +81,30 @@ export class FeedService {
     return {
       items,
       nextCursor: nextCursor || null
-
     };
+  }
+  private whereClause(cursor?: string) {
+    if (!cursor) {
+      return {};
+    }
+    try {
+      const decoded = Buffer.from(cursor, 'base64').toString('ascii');
+      const { createdAt, id } = JSON.parse(decoded);
+      return {
+        OR: [
+          { createdAt: { lt: new Date(createdAt) } },
+          {
+            AND: [
+              { createdAt: new Date(createdAt) },
+              { id: { lt: id } }
+            ]
+          }
+        ]
+      };
+    } catch (error) {
+      console.log('Invalid cursor format:', error);
+      return {};
+    }
   }
 
   private createSnippet(body: string): string {
